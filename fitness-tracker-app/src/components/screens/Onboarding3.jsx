@@ -1,19 +1,27 @@
 import React from "react";
 import Button from "../common/Button";
+import backgroundImage from "../../assets/Images/Nutr.jpg";
 
 function Onboarding3() {
   return (
-    <div
-      className="h-screen bg-cover bg-center flex items-center justify-center"
-      style={{ backgroundImage: "url('img.jpg')" }}
-    >
-      <div className="text-center text-black">
-        <h1 className="text-4xl font-bold mb-4">
+    <div className="h-screen flex flex-col">
+      {/* Image Section */}
+      <div
+        className="h-1/2 bg-cover bg-center"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      ></div>
+
+      {/* Text Section */}
+      <div className="h-1/2 flex flex-col items-center justify-center bg-gray-900 px-4">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center">
           Find Nutrition Tips That Fits Your Life Style
         </h1>
-        <Button label="Next" to="/LogIn" />
+        <div className="mt-4">
+          <Button label="Next" to="/LogIn" />
+        </div>
       </div>
     </div>
   );
 }
+
 export default Onboarding3;

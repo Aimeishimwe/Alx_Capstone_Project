@@ -65,14 +65,12 @@ const LogIn = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
       {/* Titles and Paragraph */}
-      <div className="text-center mb-4">
-        <h1 className="text-3xl font-bold sm:text-4xl">Log In</h1>
-        <h2 className="text-xl mt-2 sm:text-2xl">Welcome Back</h2>
-        <p className="text-gray-600 mb-6 sm:text-lg">
-          Please log in to continue
-        </p>
+      <div className="text-center mb-6">
+        <h1 className="text-3xl font-bold sm:text-4xl text-white">Log In</h1>
+        <h2 className="text-xl mt-2 sm:text-2xl text-white">Welcome Back</h2>
+        <p className="text-white mb-6 sm:text-lg">Please log in to continue</p>
       </div>
 
       {/* Card containing the form */}
@@ -123,7 +121,7 @@ const LogIn = () => {
               </div>
 
               {/* Forgot Password Link */}
-              <div className="text-center mb-4">
+              <div className="text-center mb-6">
                 <Link
                   to="/ForgotPassword"
                   className="text-blue-500 hover:underline"
@@ -133,7 +131,7 @@ const LogIn = () => {
               </div>
 
               {/* Submit Button */}
-              <div className="mb-4">
+              <div className="mb-6">
                 <button
                   type="submit"
                   className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
@@ -147,7 +145,7 @@ const LogIn = () => {
       </div>
 
       {/* Sign Up Link */}
-      <div className="text-center mt-4">
+      <div className="text-center mt-4 text-white">
         <span>Don't have an account? </span>
         <Link to="/SignUp" className="text-blue-500 hover:underline">
           Sign Up
