@@ -36,21 +36,26 @@ const SignUp = () => {
       const newUser = { name, email, password };
       localStorage.setItem("users", JSON.stringify([...users, newUser]));
 
+      // Set the logged-in user after successful registration
+      localStorage.setItem("loggedInUser", JSON.stringify(newUser));
+
       alert("Registration successful! You can now log in.");
-      navigate("/LogIn"); // Redirect to LogIn page
+      navigate("/LogIn");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
       {/* Titles */}
-      <div className="text-center mb-4">
-        <h1 className="text-3xl font-bold sm:text-4xl">Sign Up</h1>
-        <p className="text-gray-600 mb-6 sm:text-lg">Create your account</p>
+      <div className="text-center mb-6">
+        <h1 className="text-3xl font-bold sm:text-4xl text-white">Sign Up</h1>
+        <p className="text-white sm:text-lg">
+          Create your account to get started
+        </p>
       </div>
 
-      {/* Card containing the form */}
-      <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg w-full sm:w-96 mb-6">
+      {/* Form Card */}
+      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md w-full sm:w-96">
         <Formik
           initialValues={{
             name: "",
@@ -63,9 +68,12 @@ const SignUp = () => {
         >
           {() => (
             <Form>
-              {/* Name Input */}
+              {/* Name Field */}
               <div className="mb-4">
-                <label htmlFor="name" className="block text-gray-700">
+                <label
+                  htmlFor="name"
+                  className="block text-gray-700 font-medium"
+                >
                   Name
                 </label>
                 <Field
@@ -73,18 +81,21 @@ const SignUp = () => {
                   id="name"
                   name="name"
                   placeholder="Enter your name"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-4 py-2 border rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <ErrorMessage
                   name="name"
                   component="div"
-                  className="text-red-500 text-sm"
+                  className="text-red-500 text-sm mt-1"
                 />
               </div>
 
-              {/* Email Input */}
+              {/* Email Field */}
               <div className="mb-4">
-                <label htmlFor="email" className="block text-gray-700">
+                <label
+                  htmlFor="email"
+                  className="block text-gray-700 font-medium"
+                >
                   Email
                 </label>
                 <Field
@@ -92,18 +103,21 @@ const SignUp = () => {
                   id="email"
                   name="email"
                   placeholder="Enter your email"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-4 py-2 border rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <ErrorMessage
                   name="email"
                   component="div"
-                  className="text-red-500 text-sm"
+                  className="text-red-500 text-sm mt-1"
                 />
               </div>
 
-              {/* Password Input */}
+              {/* Password Field */}
               <div className="mb-4">
-                <label htmlFor="password" className="block text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="block text-gray-700 font-medium"
+                >
                   Password
                 </label>
                 <Field
@@ -111,20 +125,20 @@ const SignUp = () => {
                   id="password"
                   name="password"
                   placeholder="Enter your password"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-4 py-2 border rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <ErrorMessage
                   name="password"
                   component="div"
-                  className="text-red-500 text-sm"
+                  className="text-red-500 text-sm mt-1"
                 />
               </div>
 
-              {/* Confirm Password Input */}
+              {/* Confirm Password Field */}
               <div className="mb-4">
                 <label
                   htmlFor="confirmPassword"
-                  className="block text-gray-700"
+                  className="block text-gray-700 font-medium"
                 >
                   Confirm Password
                 </label>
@@ -133,12 +147,12 @@ const SignUp = () => {
                   id="confirmPassword"
                   name="confirmPassword"
                   placeholder="Confirm your password"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-4 py-2 border rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <ErrorMessage
                   name="confirmPassword"
                   component="div"
-                  className="text-red-500 text-sm"
+                  className="text-red-500 text-sm mt-1"
                 />
               </div>
 
@@ -146,7 +160,7 @@ const SignUp = () => {
               <div className="mb-4">
                 <button
                   type="submit"
-                  className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                  className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-400"
                 >
                   Sign Up
                 </button>
@@ -156,9 +170,9 @@ const SignUp = () => {
         </Formik>
       </div>
 
-      {/* Already Have Account Link */}
+      {/* Already Have Account */}
       <div className="text-center mt-4">
-        <span>Already have an account? </span>
+        <span className="text-white">Already have an account? </span>
         <Link to="/LogIn" className="text-blue-500 hover:underline">
           Log In
         </Link>

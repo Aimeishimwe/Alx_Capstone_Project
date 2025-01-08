@@ -21,7 +21,6 @@ const LogIn = () => {
     // Check if user is already authenticated
     const isAuthenticated = localStorage.getItem("isAuthenticated");
 
-    // Redirect to HomePage only if not coming from /LogIn or /SignUp
     if (
       isAuthenticated === "true" &&
       location.pathname !== "/LogIn" &&
@@ -34,10 +33,10 @@ const LogIn = () => {
   const handleSubmit = (values) => {
     const { email, password } = values;
 
-    // Retrieve users from localStorage
+    // Retrieve users array from localStorage
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Check if user exists and credentials match
+    // Find the user by matching email and password
     const user = users.find(
       (user) => user.email === email && user.password === password
     );
@@ -46,7 +45,7 @@ const LogIn = () => {
       // Set authentication flag in localStorage
       localStorage.setItem("isAuthenticated", "true");
 
-      // Store the logged-in user's data in localStorage (so we can access it later)
+      // Store the logged-in user's data in localStorage
       localStorage.setItem("loggedInUser", JSON.stringify(user));
 
       // Retrieve user's workout data or initialize if not available
@@ -91,8 +90,8 @@ const LogIn = () => {
                   type="email"
                   id="email"
                   name="email"
+                  className="w-full p-2 border border-gray-300 rounded-md"
                   placeholder="Enter your email"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                 />
                 <ErrorMessage
                   name="email"
@@ -110,8 +109,8 @@ const LogIn = () => {
                   type="password"
                   id="password"
                   name="password"
+                  className="w-full p-2 border border-gray-300 rounded-md"
                   placeholder="Enter your password"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                 />
                 <ErrorMessage
                   name="password"
@@ -120,8 +119,17 @@ const LogIn = () => {
                 />
               </div>
 
-              {/* Forgot Password Link */}
-              <div className="text-center mb-6">
+              {/* Submit Button */}
+              <div className="mb-4">
+                <button
+                  type="submit"
+                  className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-400"
+                >
+                  Log In
+                </button>
+              </div>
+              {/* Forgot Password */}
+              <div className="text-center mb-4">
                 <Link
                   to="/ForgotPassword"
                   className="text-blue-500 hover:underline"
@@ -129,24 +137,14 @@ const LogIn = () => {
                   Forgot Password?
                 </Link>
               </div>
-
-              {/* Submit Button */}
-              <div className="mb-6">
-                <button
-                  type="submit"
-                  className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                >
-                  Log In
-                </button>
-              </div>
             </Form>
           )}
         </Formik>
       </div>
 
-      {/* Sign Up Link */}
-      <div className="text-center mt-4 text-white">
-        <span>Don't have an account? </span>
+      {/* Registration Link */}
+      <div className="text-center">
+        <span className="text-white">Don't have an account? </span>
         <Link to="/SignUp" className="text-blue-500 hover:underline">
           Sign Up
         </Link>
