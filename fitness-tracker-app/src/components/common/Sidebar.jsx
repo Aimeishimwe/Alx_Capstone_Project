@@ -81,6 +81,14 @@ const Sidebar = ({
           Nutrition
         </NavLink>
         <NavLink
+          to="/LogNutrition"
+          className={({ isActive }) =>
+            `block px-4 py-2 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`
+          }
+        >
+          Prepare Your Meal
+        </NavLink>
+        <NavLink
           to="/UserProfile"
           className={({ isActive }) =>
             `block px-4 py-2 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`
