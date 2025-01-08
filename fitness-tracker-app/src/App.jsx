@@ -16,6 +16,7 @@ import NutritionTracking from "./components/screens/NutritionTracking";
 import ProgressTracking from "./components/screens/ProgressTracking";
 import WorkoutPlan from "./components/screens/WorkoutPlan";
 import CreateWorkoutPlan from "./components/screens/CreateWorkoutPlan";
+import LogNutrition from "./components/screens/LogNutrition";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/ProgressTracking" element={<ProgressTracking />} />
         <Route path="/WorkoutPlan" element={<WorkoutPlan />} />
         <Route path="/CreateWorkoutPlan" element={<CreateWorkoutPlan />} />
+        <Route path="/LogNutrition" element={<LogNutrition />} />
       </Routes>
     </Router>
   );
