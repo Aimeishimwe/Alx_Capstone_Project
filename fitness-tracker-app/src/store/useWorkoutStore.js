@@ -1,165 +1,174 @@
 import { create } from "zustand";
 
-// Helper function: Get logged-in user
+// Helper functions for local storage
 const getLoggedInUser = () =>
   JSON.parse(localStorage.getItem("loggedInUser")) || null;
 
-// Helper function: Get workouts or plans for a specific user
 const getUserData = (email) => {
   const users = JSON.parse(localStorage.getItem("users")) || [];
   const user = users.find((user) => user.email === email);
-  return user || {};
+  return (
+    user || {
+      loggedWorkouts: [], // Fallback to empty array if no user is found
+      workoutPlans: [], // Fallback to empty array if no user is found
+    }
+  );
 };
 
-const useWorkoutStore = create((set) => ({
-  workouts: [], // Array for logged workouts
-  workoutPlans: [], // Array for custom workout plans
-  completedPlans: [], // Array for completed workout plans
-  historyPlans: [], // Array for historical workout plans
+const saveUserData = (email, data) => {
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const updatedUsers = users.map((user) =>
+    user.email === email ? { ...user, ...data } : user
+  );
+  if (!updatedUsers.some((user) => user.email === email)) {
+    updatedUsers.push({ email, ...data });
+  }
+  localStorage.setItem("users", JSON.stringify(updatedUsers));
+};
 
-  // Initialize workouts and workout plans
-  initializeWorkouts: () => {
+// Zustand store
+const useWorkoutStore = create((set) => ({
+  // State
+  loggedWorkouts: [],
+  workoutPlans: [],
+  history: [],
+  combinedWorkouts: [], // This is just for filtering, not for display
+
+  // Initialize store with data from local storage
+  initializeStore: () => {
     const user = getLoggedInUser();
     if (user) {
       const userData = getUserData(user.email);
-      const workouts = userData.workouts || [];
+      const loggedWorkouts = userData.loggedWorkouts || [];
       const workoutPlans = userData.workoutPlans || [];
-      set({ workouts, workoutPlans });
+      set({
+        loggedWorkouts: loggedWorkouts,
+        workoutPlans: workoutPlans,
+        history: [
+          ...loggedWorkouts, // Include logged workouts directly into history
+          ...workoutPlans, // Include workout plans directly into history
+        ],
+        combinedWorkouts: [
+          ...loggedWorkouts, // Combine logged workouts and plans for filtering
+          ...workoutPlans,
+        ],
+      });
     }
   },
 
-  // Add logged workout
-  addWorkout: (workout) =>
+  // Log a workout
+  logWorkout: (workout) => {
     set((state) => {
       const user = getLoggedInUser();
       if (user) {
-        const updatedWorkouts = [...state.workouts, workout];
-
-        // Update user data in localStorage
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-        const updatedUsers = users.map((u) =>
-          u.email === user.email ? { ...u, workouts: updatedWorkouts } : u
-        );
-        localStorage.setItem("users", JSON.stringify(updatedUsers));
-        return { workouts: updatedWorkouts };
-      }
-      return state;
-    }),
-
-  // Add custom workout plan
-  addWorkoutPlan: (workoutPlan) =>
-    set((state) => {
-      const user = getLoggedInUser();
-      if (user) {
-        const updatedWorkoutPlans = [...state.workoutPlans, workoutPlan];
-
-        // Update user data in localStorage
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-        const updatedUsers = users.map((u) =>
-          u.email === user.email
-            ? { ...u, workoutPlans: updatedWorkoutPlans }
-            : u
-        );
-        localStorage.setItem("users", JSON.stringify(updatedUsers));
-        return { workoutPlans: updatedWorkoutPlans };
-      }
-      return state;
-    }),
-
-  // Delete logged workout
-  deleteWorkout: (timestamp) =>
-    set((state) => {
-      const user = getLoggedInUser();
-      if (user) {
-        const updatedWorkouts = state.workouts.filter(
-          (workout) => workout.timestamp !== timestamp
-        );
-
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-        const updatedUsers = users.map((u) =>
-          u.email === user.email ? { ...u, workouts: updatedWorkouts } : u
-        );
-        localStorage.setItem("users", JSON.stringify(updatedUsers));
-        return { workouts: updatedWorkouts };
-      }
-      return state;
-    }),
-
-  // Delete custom workout plan
-  deleteWorkoutPlan: (timestamp) =>
-    set((state) => {
-      const user = getLoggedInUser();
-      if (user) {
-        const updatedWorkoutPlans = state.workoutPlans.filter(
-          (plan) => plan.timestamp !== timestamp
-        );
-
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-        const updatedUsers = users.map((u) =>
-          u.email === user.email
-            ? { ...u, workoutPlans: updatedWorkoutPlans }
-            : u
-        );
-        localStorage.setItem("users", JSON.stringify(updatedUsers));
-        return { workoutPlans: updatedWorkoutPlans };
-      }
-      return state;
-    }),
-
-  // Mark workout plan as complete and send to history and progress
-  markPlanAsComplete: (timestamp) =>
-    set((state) => {
-      const user = getLoggedInUser();
-      if (user) {
-        // Find the plan that is being marked as complete
-        const updatedWorkoutPlans = state.workoutPlans.filter(
-          (plan) => plan.timestamp !== timestamp
-        );
-
-        const completedPlan = state.workoutPlans.find(
-          (plan) => plan.timestamp === timestamp
-        );
-
-        // Add the completed plan to history and progress
-        const updatedCompletedPlans = [...state.completedPlans, completedPlan];
-
-        const updatedHistoryPlans = [
-          ...state.historyPlans,
-          { ...completedPlan, completed: true },
-        ];
-
-        // Update user data in localStorage
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-        const updatedUsers = users.map((u) =>
-          u.email === user.email
-            ? {
-                ...u,
-                workoutPlans: updatedWorkoutPlans,
-                completedPlans: updatedCompletedPlans,
-                historyPlans: updatedHistoryPlans,
-              }
-            : u
-        );
-        localStorage.setItem("users", JSON.stringify(updatedUsers));
+        const updatedLoggedWorkouts = [...state.loggedWorkouts, workout];
+        const updatedHistory = [...state.history, workout]; // Add workout directly to history
+        const updatedCombinedWorkouts = [...state.combinedWorkouts, workout];
+        saveUserData(user.email, { loggedWorkouts: updatedLoggedWorkouts });
         return {
-          workoutPlans: updatedWorkoutPlans,
-          completedPlans: updatedCompletedPlans,
-          historyPlans: updatedHistoryPlans,
+          loggedWorkouts: updatedLoggedWorkouts,
+          history: updatedHistory, // Updated history
+          combinedWorkouts: updatedCombinedWorkouts, // For filtering purposes
         };
       }
       return state;
-    }),
+    });
+  },
 
-  // Group logged workouts by exercise
+  // Add a workout plan
+  addWorkoutPlan: (plan) => {
+    set((state) => {
+      const user = getLoggedInUser();
+      if (user) {
+        const updatedWorkoutPlans = [...state.workoutPlans, plan];
+        const updatedHistory = [...state.history, plan]; // Add plan directly to history
+        const updatedCombinedWorkouts = [...state.combinedWorkouts, plan];
+        saveUserData(user.email, { workoutPlans: updatedWorkoutPlans });
+        return {
+          workoutPlans: updatedWorkoutPlans,
+          history: updatedHistory, // Updated history
+          combinedWorkouts: updatedCombinedWorkouts, // For filtering purposes
+        };
+      }
+      return state;
+    });
+  },
+
+  // Clear all history
+  clearHistory: () => {
+    set(() => {
+      const user = getLoggedInUser();
+      if (user) {
+        saveUserData(user.email, { loggedWorkouts: [], workoutPlans: [] });
+        return {
+          loggedWorkouts: [],
+          workoutPlans: [],
+          history: [],
+          combinedWorkouts: [],
+        };
+      }
+      return {};
+    });
+  },
+
+  // Delete a specific workout
+  deleteWorkout: (timestamp) => {
+    set((state) => {
+      const user = getLoggedInUser();
+      if (user) {
+        const updatedLoggedWorkouts = state.loggedWorkouts.filter(
+          (workout) => workout.timestamp !== timestamp
+        );
+        const updatedHistory = state.history.filter(
+          (item) => item.timestamp !== timestamp
+        );
+        const updatedCombinedWorkouts = state.combinedWorkouts.filter(
+          (item) => item.timestamp !== timestamp
+        );
+        saveUserData(user.email, { loggedWorkouts: updatedLoggedWorkouts });
+        return {
+          loggedWorkouts: updatedLoggedWorkouts,
+          history: updatedHistory,
+          combinedWorkouts: updatedCombinedWorkouts,
+        };
+      }
+      return state;
+    });
+  },
+
+  // Delete a specific workout plan
+  deleteWorkoutPlan: (timestamp) => {
+    set((state) => {
+      const user = getLoggedInUser();
+      if (user) {
+        const updatedWorkoutPlans = state.workoutPlans.filter(
+          (plan) => plan.timestamp !== timestamp
+        );
+        const updatedHistory = state.history.filter(
+          (item) => item.timestamp !== timestamp
+        );
+        const updatedCombinedWorkouts = state.combinedWorkouts.filter(
+          (item) => item.timestamp !== timestamp
+        );
+        saveUserData(user.email, { workoutPlans: updatedWorkoutPlans });
+        return {
+          workoutPlans: updatedWorkoutPlans,
+          history: updatedHistory,
+          combinedWorkouts: updatedCombinedWorkouts,
+        };
+      }
+      return state;
+    });
+  },
+
+  // Group workouts by exercise
   groupWorkoutsByExercise: () => {
     const user = getLoggedInUser();
     if (user) {
-      const workouts = getUserData(user.email).workouts || [];
+      const workouts = getUserData(user.email).loggedWorkouts || [];
       return workouts.reduce((grouped, workout) => {
         const { exercise } = workout;
-        if (!grouped[exercise]) {
-          grouped[exercise] = [];
-        }
+        if (!grouped[exercise]) grouped[exercise] = [];
         grouped[exercise].push(workout);
         return grouped;
       }, {});
@@ -167,16 +176,14 @@ const useWorkoutStore = create((set) => ({
     return {};
   },
 
-  // Group workout plans by type (or other criteria)
+  // Group workout plans by type
   groupWorkoutPlansByType: () => {
     const user = getLoggedInUser();
     if (user) {
-      const workoutPlans = getUserData(user.email).workoutPlans || [];
-      return workoutPlans.reduce((grouped, plan) => {
-        const { type } = plan; // Assuming 'type' is a property of each workout plan
-        if (!grouped[type]) {
-          grouped[type] = [];
-        }
+      const plans = getUserData(user.email).workoutPlans || [];
+      return plans.reduce((grouped, plan) => {
+        const { type } = plan;
+        if (!grouped[type]) grouped[type] = [];
         grouped[type].push(plan);
         return grouped;
       }, {});
