@@ -1,12 +1,7 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-const Sidebar = ({
-  isSidebarOpen,
-  toggleSidebar,
-  isDarkMode,
-  toggleDarkMode,
-}) => {
+const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   if (!isSidebarOpen) return null; // Only render if open
 
   const navigate = useNavigate(); // Import and use navigate hook
@@ -25,7 +20,7 @@ const Sidebar = ({
       <nav className="mt-6 space-y-2">
         {/* Navigation Links */}
         <NavLink
-          to="/HomePage"
+          to="/Main/HomePage"
           className={({ isActive }) =>
             `block px-4 py-2 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`
           }
@@ -33,7 +28,7 @@ const Sidebar = ({
           Home
         </NavLink>
         <NavLink
-          to="/LogWorkout"
+          to="/Main/LogWorkoutPage"
           className={({ isActive }) =>
             `block px-4 py-2 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`
           }
@@ -41,23 +36,16 @@ const Sidebar = ({
           Log Workout
         </NavLink>
         <NavLink
-          to="/CreateWorkoutPlan"
+          to="/Main/CreateWorkoutPlanPage"
           className={({ isActive }) =>
             `block px-4 py-2 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`
           }
         >
           Create Workout Plan
         </NavLink>
+
         <NavLink
-          to="/WorkoutPlan"
-          className={({ isActive }) =>
-            `block px-4 py-2 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`
-          }
-        >
-          View workout Plans
-        </NavLink>
-        <NavLink
-          to="/WorkoutHistory"
+          to="/Main/WorkoutHistoryPage"
           className={({ isActive }) =>
             `block px-4 py-2 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`
           }
@@ -65,7 +53,7 @@ const Sidebar = ({
           Workout History
         </NavLink>
         <NavLink
-          to="/ProgressTracking"
+          to="/Main/ProgressTrackingPage"
           className={({ isActive }) =>
             `block px-4 py-2 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`
           }
@@ -73,7 +61,7 @@ const Sidebar = ({
           Progress
         </NavLink>
         <NavLink
-          to="/NutritionTracking"
+          to="/Main/NutritionTrackingPage"
           className={({ isActive }) =>
             `block px-4 py-2 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`
           }
@@ -81,7 +69,7 @@ const Sidebar = ({
           Nutrition
         </NavLink>
         <NavLink
-          to="/LogNutrition"
+          to="/Main/LogNutritionPage"
           className={({ isActive }) =>
             `block px-4 py-2 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`
           }
@@ -89,7 +77,7 @@ const Sidebar = ({
           Prepare Your Meal
         </NavLink>
         <NavLink
-          to="/UserProfile"
+          to="/Main/UserProfilePage"
           className={({ isActive }) =>
             `block px-4 py-2 hover:bg-gray-700 ${isActive ? "bg-gray-700" : ""}`
           }
