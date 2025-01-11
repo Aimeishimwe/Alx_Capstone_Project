@@ -4,11 +4,13 @@ A fitness tracker web application that allows users to log their workouts, track
 
 ## Features
 
-- **Workout Logging**: Users can log their daily workouts and track progress.
-- **Exercise Database**: Provides a wide variety of exercises with detailed instructions and muscle group information.
-- **Customizable Workouts**: Users can select workout templates based on their fitness level and goals.
-- **Progress Tracking**: Users can visualize their progress over time through charts or logs.
-- **Responsive Design**: Optimized for both mobile and desktop views using Tailwind CSS.
+**Workout Logging**: Users can log their daily workouts and track progress.
+**Exercise Database**: Provides a wide variety of exercises with detailed instructions and muscle group information.
+**Customizable Workouts**: Users can select workout templates based on their fitness level and goals.
+**Progress Tracking**: Users can visualize their progress over time through charts or logs.
+**Nutrition Tracking**: Allows users to log and track their nutritional intake.
+**Responsive Design**: Optimized for both mobile and desktop views using Tailwind CSS.
+**User Management**: Features such as login, signup, password recovery, and user profile management.
 
 ## Technologies Used
 
@@ -38,9 +40,11 @@ Before you begin, ensure you have the following installed:
    npm install
 4. Start the development server:
    npm run dev
-   This will run the app locally on http://localhost:517.
-   Configuration
-   The WGER Workout Manager API is used for fetching workout and exercise data. All API calls are made from the backend to ensure security and performance. You'll need an API key to access the data, which you can sign up for at WGER API website.
+   This will run the app locally on http://localhost:5173.
+
+### Configuration
+
+The WGER Workout Manager API is used for fetching workout and exercise data. All API calls are made from the backend to ensure security and performance. You'll need an API key to access the data, which you can sign up for at WGER API website.
 
 ### Usage
 
@@ -54,23 +58,52 @@ Customize Workouts: Choose from workout templates based on fitness goals (e.g., 
 ### File Structure
 
 fitness-tracker/
-│
-├── public/
-│ └── index.html
-│
-├── src/
-│ ├── assets/ # Images and static assets
-│ ├── components/ # Reusable React components
-│ ├── pages/ # App pages (e.g., Home, Exercise List)
-│ ├── services/ # API calls and business logic
-│ ├── App.jsx # Main application component
-│ ├── index.jsx # Entry point for the app
-│ └── index.css # Global styles (Tailwind CSS)
-│
-├── tailwind.config.js # Tailwind CSS configuration
+├── node_modules/ # Dependency modules installed via npm
+├── public/ # Publicly accessible files
+│ ├── assets/ # Public assets like images or static files
+│ │ └── images/ # Images used in the app
+│ └── index.html # HTML template for the app
+├── src/ # Source code for the application
+│ ├── assets/ # App-specific static files
+│ │ └── images/ # App-specific images
+│ ├── components/ # Reusable components
+│ │ ├── common/ # Generic reusable components
+│ │ │ ├── Button.jsx
+│ │ │ ├── Sidebar.jsx
+│ │ │ └── ... # Other shared components
+│ │ ├── layouts/ # Layout components (e.g., headers, footers)
+│ │ └── screens/ # Individual pages or screens
+│ │ ├── Auth/ # Authentication-related screens
+│ │ │ ├── LoginPage.jsx
+│ │ │ ├── SignUpPage.jsx
+│ │ │ ├── ForgotPasswordPage.jsx
+│ │ │ └── SetupPasswordPage.jsx
+│ │ ├── Main/ # Main application screens
+│ │ │ ├── HomePage.jsx
+│ │ │ ├── LogWorkoutPage.jsx
+│ │ │ ├── LogNutritionPage.jsx
+│ │ │ ├── ProgressTrackingPage.jsx
+│ │ │ ├── UserProfilePage.jsx
+│ │ │ └── CreateWorkoutPlanPage.jsx
+│ │ └── Onboarding/ # Onboarding flow screens
+│ │ ├── OnboardingStep1.jsx
+│ │ ├── OnboardingStep2.jsx
+│ │ ├── OnboardingStep3.jsx
+│ │ └── WelcomePage.jsx
+│ ├── store/ # Zustand or other state management files
+│ │ ├── useWorkoutStore.js # Zustand store for workout data
+│ │ ├── mealStore.js # Zustand store for meal data
+│ ├── App.jsx # Root application component
+│ ├── main.jsx # Entry point for the React app
+│ ├── index.css # Tailwind and global styles entry point
+│ └── App.css # Global styles
+├── .gitignore # Git ignore configuration
+├── eslint.config.js # ESLint configuration
 ├── package.json # Project metadata and dependencies
+├── postcss.config.js # PostCSS configuration for Tailwind CSS
 ├── README.md # Project documentation
-└── .gitignore # Files to exclude from Git
+├── tailwind.config.js # Tailwind CSS configuration
+└── vite.config.js # Vite configuration file
 
 ### Contributing
 
@@ -100,7 +133,7 @@ Vite for a fast and efficient development environment.
 
 Here’s a screenshot of the app running locally:
 
-![Local Setup](screenshoots/Local%20Setup.PNG)
-![Localserver](screenshoots/Local%20server.PNG)
+![Welcome Screen](/public/assets/Images/Welcome_Screen%20.png)
+![Login Page](/public/assets/Images/LogIn_Screen.png)
 
 ### Welcome to support lives and make the World a better place for all
