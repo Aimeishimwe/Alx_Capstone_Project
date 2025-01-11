@@ -2,12 +2,14 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
-  if (!isSidebarOpen) return null; // Only render if open
-
   const navigate = useNavigate(); // Import and use navigate hook
 
   return (
-    <div className="fixed top-0 left-0 w-64 h-screen bg-gray-800 text-white">
+    <div
+      className={`fixed top-0 left-0 w-64 h-screen bg-gray-800 text-white transition-transform duration-300 ${
+        isSidebarOpen ? "transform-none" : "-translate-x-full"
+      }`}
+    >
       <div className="p-4 flex justify-between items-center">
         <h1 className="text-lg font-bold">PulsePoint</h1>
         <button
@@ -88,7 +90,10 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
 
         {/* Log Out Button */}
         <button
-          onClick={() => navigate("/")} // Redirect to Welcome Page
+          onClick={() => {
+            localStorage.setItem("isAuthenticated", "false"); // Set isAuthenticated to false
+            navigate("/"); // Redirect to the Welcome Page
+          }}
           className="block w-full px-4 py-2 hover:bg-red-600"
         >
           Logout
